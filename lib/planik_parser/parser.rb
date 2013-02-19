@@ -4,7 +4,7 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:space) { match[" "].repeat(1) }
   rule(:space?) { space.maybe }
 
-  rule(:integer) { match('[0-9]').repeat(1) >> space? }
+  rule(:integer) { match('[0-9]').repeat(1) }
   rule(:word) { match('[A-Za-z0-9]').repeat(1).as(:word) >> space? }
 
   rule(:lparen) { str("(") >> space? }
