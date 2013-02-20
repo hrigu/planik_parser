@@ -5,7 +5,7 @@ require 'planik_parser/day_expression'
 class PlanikParser::Transformer < Parslet::Transform
 
 
-  rule(:bool_const => simple(:bool_const))  { bool_const == "true" ? true : false }
+  rule(:boolean => simple(:x))  { x == "true" ? true : false }
   rule(:word => simple(:x))                 { x }
   rule(:day_expression => {
       :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do

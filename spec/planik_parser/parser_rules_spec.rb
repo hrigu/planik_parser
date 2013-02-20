@@ -31,16 +31,9 @@ module PlanikParser
           rule.should parse("t456")
         end
 
-        it "should handle whitespace" do
-          rule.should parse("t631 ")
-        end
-
         context "return" do
           it "should return the index as string which represents an integer" do
             x = rule.parse("t456")[:index].should == "456"
-          end
-          it "should return handle whitespace" do
-            x = rule.parse("t456  ")[:index].should == "456"
           end
         end
 
@@ -73,12 +66,61 @@ module PlanikParser
           pp rule.parse "t0.wochentag = Di"
         end
       end
+      context "dienste_expression" do
+        let(:rule) { subject.dienste_expression }
+        it "should parse 't0.name in (A, B)'" do
+          rule.should parse("t0.name in (A, B)")
+          pp rule.parse "t0.name in (A, B)"
+        end
+        it "should parse 't0.name !in (A, B)'" do
+          rule.should parse("t0.name !in (A, B)")
+          pp rule.parse "t0.name !in (A, B)"
+        end
+      end
+      context "diensttypen_expression" do
+        let(:rule) { subject.diensttypen_expression }
+        it "should parse 't0.typ in (A, B)'" do
+          rule.should parse("t0.typ in (A, B)")
+          pp rule.parse "t0.typ in (A, B)"
+        end
+        it "should parse 't0.typ !in (A, B)'" do
+          rule.should parse("t0.typ !in (A, B)")
+          pp rule.parse "t0.typ !in (A, B)"
+        end
+      end
+
+      context "wochentage_expression" do
+        let(:rule) { subject.wochentage_expression }
+        it "should parse 't0.wochentag in (Mo, Do, Fr)'" do
+          rule.should parse("t0.wochentag in (Mo, Do, Fr)")
+          pp rule.parse "t0.wochentag in (Mo, Do, Fr)"
+        end
+        it "should parse 't0.wochentag !in (Mo, Do, Fr)'" do
+          rule.should parse("t0.wochentag !in (Mo, Do, Fr)")
+          pp rule.parse "t0.wochentag !in (Mo, Do, Fr)"
+        end
+      end
+      context "besetzt_expression" do
+        let(:rule) { subject.besetzt_expression }
+        it "should parse 't0.besetzt'" do
+          rule.should parse("t0.besetzt")
+          pp rule.parse "t0.besetzt"
+        end
+        it "should parse 'should parse 't0.frei'" do
+          rule.should parse("t0.frei")
+          pp rule.parse "t0.frei"
+        end
+      end
+
 
       context "day_expression" do
         let(:rule) { subject.day_expression }
-        it "should parse for example a wochentag_expression'" do
+        it "should parse a wochentag_expression'" do
           rule.should parse("t0.wochentag = Mo")
-          pp rule.parse "t0.wochentag = Di"
+        end
+        it "should parse a wochentage_expression'" do
+          rule.should parse("t0.wochentag !in (Mo,Di)")
+          pp rule.parse("t0.wochentag !in (Mo,Di)")
         end
       end
 
