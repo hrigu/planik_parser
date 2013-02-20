@@ -8,7 +8,7 @@ class PlanikParser::Transformer < Parslet::Transform
   rule(:bool_const => simple(:bool_const))  { bool_const == "true" ? true : false }
   rule(:word => simple(:x))                 { x }
   rule(:day_expression => {
-      :index => simple(:i), :property => simple(:p), :assignment => simple(:a), :value => simple(:v)}) do
+      :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do
     DayExpression.new(i, p, a, v)
   end
 

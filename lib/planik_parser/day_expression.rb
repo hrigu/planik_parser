@@ -1,5 +1,5 @@
 class PlanikParser::DayExpression
-  def initialize(index, property, assignment, value)
-    @index, @property, @assignment, @value = index, property, assignment, value
+  def initialize(index, property, comparator, value)
+    @index, @property, @comparator, @value = index, property, comparator, value
   end
 end
