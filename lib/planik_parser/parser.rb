@@ -11,15 +11,23 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:integer) { match('[0-9]').repeat(1) }
   rule(:string) { match('[A-Za-z0-9]').repeat(1).as(:string) >> space? }
 
+  rule(:bool_literal) { (str("true") | str("false")).as(:boolean) >> space? }
+  rule(:besetzt_literal) { (str("frei") | str("besetzt")).as(:besetzt) >> space? }
+  #IntProperty: 'zeit_von' | 'zeit_bis' | 'dauer' | 'tag' | 'soll' | 'datum_zeit_von' | 'datum_zeit_bis' | 'datum'
+
+  #LDateTime: /[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]/
+  #LTime: /[0-9][0-9]:[0-9][0-9]:[0-9][0-9]/
+  #LConst: LDateTime | LTime | integer
+
+
   rule(:wochentag) { (str("Mo") | str("Di")| str("Mi") | str("Do") | str("Fr") | str("Sa") | str("So")).as(:wochentag) }
   rule(:strings) {lparen>>(string >> (comma >> string).repeat).as(:strings) >> rparen}
   rule(:wochentage) {lparen>>(string >> (comma >> wochentag).repeat).as(:wochentage) >> rparen}
 
-  rule(:bool_literal) { (str("true") | str("false")).as(:boolean) >> space? }
-  rule(:besetzt_literal) { (str("frei") | str("besetzt")).as(:besetzt) >> space? }
 
   rule(:comparator) { space? >> (str("!=") | str("=")).as(:comparator) >> space? }
   rule(:in_comparator) { space? >> (str("!").maybe >> str("in")).as(:comparator) >> space? }
+  #IntComparator: '<=' | '>=' | '>' | '<' | '='
 
   rule(:and_operator) { str("and") >> space? }
   rule(:or_operator) { str("or") >> space? }
@@ -35,6 +43,10 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:wochentage_expression) { (day >> str(".wochentag") >> in_comparator >> wochentage).as(:wochentage_expression) }
 
   rule(:besetzt_expression) { (day >> str(".") >> besetzt_literal).as(:besetzt_expression)}
+
+  #TODO LFunctionCompare: 't' operand:LNumber '.' operand:IntProperty > operand:IntComparator > operand:LConst
+  #TODO LFunctionSubstractCompare: 't' operand:LNumber '.' operand:IntProperty > '-' > 't' operand:LNumber '.' operand:IntProperty > operand:IntComparator > operand:LConst
+
 
   #Alle Ausdrücke beziehen sich auf Tag
   rule(:day_expression) { (dienst_expression | diensttyp_expression | wochentag_expression | dienste_expression | diensttypen_expression | wochentage_expression | besetzt_expression) } #(day >> str(".") >> property >> comparator >> value).as(:day_expression)
