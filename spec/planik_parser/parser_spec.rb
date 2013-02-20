@@ -8,7 +8,7 @@ module PlanikParser
       subject.class.name.should == "PlanikParser::Parser"
     end
 
-    context "rules" do
+    context "parser_rules" do
 
       context "integer" do
         before :each do

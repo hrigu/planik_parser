@@ -3,6 +3,8 @@ require "pp"
 require 'planik_parser/day_expression'
 
 class PlanikParser::Transformer < Parslet::Transform
+
+
   rule(:bool_const => simple(:bool_const)) { puts "CONST"; bool_const == "true" ? true : false }
   rule(:word => simple(:x)) { puts "WORD"; x }
   #rule(:index => simple(:i), :property => simple(:p), :assignment => simple(:a), :value => simple(:v)) do

@@ -23,27 +23,29 @@ class PlanikParser::Parser < Parslet::Parser
   rule (:property) {word.as(:property)}
   rule (:value) {word.as(:value)}
 
+  #Alle Ausdrücke beziehen sich auf Tag
   rule(:day_expression) { (day >> str(".") >> property >> assignment >> value).as(:day_expression) }
 
   rule(:expression) { bool_literal | day_expression }
 
+  # Behandelt Klammern
+  rule(:primary)          { lparen >> or_operation >> rparen | expression }
 
-  # The primary rule deals with parentheses.
-  rule(:primary) { lparen >> or_operation >> rparen | expression }
+  # Soll die Regel auch "!" verstehen?
+  rule(:not_operation)    { (str("not") >> space? >> primary).as(:not) | primary }
 
-  rule(:not_operation) { (str("not") >> space? >> primary).as(:not) | primary }
-
-  # Note that following rules are both right-recursive.
+  # Rechts rekursiv
   rule(:and_operation) {
     (not_operation.as(:left) >> and_operator >>
         and_operation.as(:right)).as(:and) |
         not_operation }
 
+  # Rechts rekursiv: Der rechte Teil (:right) ruft wieder diese Regel auf
   rule(:or_operation) {
     (and_operation.as(:left) >> or_operator >>
         or_operation.as(:right)).as(:or) |
         and_operation }
 
-  # We start at the lowest precedence rule.
+  # Start mit der Regel der tiefsten Priorität
   root(:or_operation)
 end
