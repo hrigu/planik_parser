@@ -20,6 +20,27 @@ module PlanikParser
         #  rule.should parse("123  ")
         #end
       end
+      context "digit" do
+        let(:rule) { subject.d }
+        it "should parse '1'" do
+          rule.should parse("1")
+        end
+        it "should parse '12'" do
+          rule.should_not parse("21")
+        end
+      end
+      context "date_time" do
+        let(:rule) { subject.date_time }
+        it "should parse '2012-02-21:08:15:00'" do
+          rule.should parse("2012-02-21T08:15:00")
+        end
+      end
+      context "time" do
+        let(:rule) { subject.time }
+        it "should parse '08:15:00'" do
+          rule.should parse("08:15:00")
+        end
+      end
 
 
       context "day" do
@@ -111,6 +132,13 @@ module PlanikParser
           pp rule.parse "t0.frei"
         end
       end
+      context "int_expression" do
+        let(:rule) { subject.int_expression }
+        it "should parse a int_expression'" do
+          puts rule.parse("t0.zeit_von < 2012-01-31T12:33:00")
+          puts rule.parse("t0.zeit_von < 12:33:00")
+        end
+      end
 
 
       context "day_expression" do
@@ -123,7 +151,6 @@ module PlanikParser
           pp rule.parse("t0.wochentag !in (Mo,Di)")
         end
       end
-
     end
   end
 
