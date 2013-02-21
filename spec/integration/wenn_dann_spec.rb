@@ -10,7 +10,10 @@ module PlanikParser
     def result
       rule = example.metadata[:description]
       tree = parser.parse(rule)
-      transformer.apply(tree).evaluate
+      puts tree
+      ast = transformer.apply(tree)
+      puts ast.to_s
+      ast.evaluate
     end
 
     describe "boolean algebra" do
@@ -22,8 +25,7 @@ module PlanikParser
     end
 
     describe "with expressions" do
-      it("not t0.name=D1") { result.to_s }
-
+      it("not (t0.name=D1 or t0.typ !in (DIENST, FREI))") { result() }
     end
   end
 

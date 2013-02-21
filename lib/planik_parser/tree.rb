@@ -49,8 +49,10 @@ module PlanikParser
   end
 
   class ExpressionNode < Leaf
+    attr_reader :index, :property, :comparator
     def initialize(name, index, property, comparator, value)
-      super(name, nil)#      :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do
+      super(name, value)
+      @index, @property, @comparator = index, property, comparator#      :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do
     end
 
   end
@@ -78,7 +80,6 @@ module PlanikParser
 
   class NotNode < InnerNode
     def initialize(child)
-      puts child.to_s
       super("not", child, nil)
     end
 

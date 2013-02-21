@@ -21,7 +21,7 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:besetzt_value) { (str("frei") | str("besetzt")).as(:besetzt) >> space? }
   rule(:date_time_value) { date | time | date_time | integer } #TODO warum auch integer?
 
-  rule(:wochentag) { (str("Mo") | str("Di")| str("Mi") | str("Do") | str("Fr") | str("Sa") | str("So")) }
+  rule(:wochentag) { (str("Mo") | str("Di")| str("Mi") | str("Do") | str("Fr") | str("Sa") | str("So")).as(:wochentag) }
 
   rule(:strings) { lparen>>(string >> (comma >> string).repeat).as(:strings) >> rparen }
   rule(:wochentage) { lparen>>(wochentag >> (comma >> wochentag).repeat).as(:wochentage) >> rparen }
@@ -42,12 +42,12 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:day) { str('t') >> integer.as(:index) }
 
   rule(:dienst_expression) { (day >> dienst_property >> comparator >> string.as(:value)).as(:dienst_expression) }
-  rule(:diensttyp_expression) { (day >> diensttyp_property >> comparator >> string).as(:diensttyp_expression) }
-  rule(:wochentag_expression) { (day >> wochentag_property >> comparator >> wochentag.as(:wochentag)).as(:wochentag_expression) }
+  rule(:diensttyp_expression) { (day >> diensttyp_property >> comparator >> string.as(:value)).as(:diensttyp_expression) }
+  rule(:wochentag_expression) { (day >> wochentag_property >> comparator >> wochentag.as(:value)).as(:wochentag_expression) }
 
-  rule(:dienste_expression) { (day >> str(".name") >> in_comparator >> strings).as(:dienste_expression) }
-  rule(:diensttypen_expression) { (day >> str(".typ") >> in_comparator >> strings).as(:diensttypen_expression) }
-  rule(:wochentage_expression) { (day >> str(".wochentag") >> in_comparator >> wochentage).as(:wochentage_expression) }
+  rule(:dienste_expression) { (day >> dienst_property >> in_comparator >> strings).as(:dienste_expression) }
+  rule(:diensttypen_expression) { (day >> diensttyp_property >> in_comparator >> strings).as(:diensttypen_expression) }
+  rule(:wochentage_expression) { (day >> wochentag_property >> in_comparator >> wochentage).as(:wochentage_expression) }
 
   rule(:besetzt_expression) { (day >> str(".") >> besetzt_value).as(:besetzt_expression) }
   rule(:int_expression) { (day >> int_property >> int_comparator >> date_time_value).as(:int_expression) }
