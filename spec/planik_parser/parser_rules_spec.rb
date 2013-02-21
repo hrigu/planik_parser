@@ -152,6 +152,12 @@ module PlanikParser
         end
       end
     end
+
+    context "parser" do
+      it "should parse a whole string" do
+        pp subject.parse("t0.name = D1")
+      end
+    end
   end
 
 

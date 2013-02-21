@@ -41,7 +41,7 @@ class PlanikParser::Parser < Parslet::Parser
 
   rule(:day) { str('t') >> integer.as(:index) }
 
-  rule(:dienst_expression) { (day >> dienst_property >> comparator >> string).as(:dienst_expression) }
+  rule(:dienst_expression) { (day >> dienst_property >> comparator >> string.as(:value)).as(:dienst_expression) }
   rule(:diensttyp_expression) { (day >> diensttyp_property >> comparator >> string).as(:diensttyp_expression) }
   rule(:wochentag_expression) { (day >> wochentag_property >> comparator >> wochentag.as(:wochentag)).as(:wochentag_expression) }
 

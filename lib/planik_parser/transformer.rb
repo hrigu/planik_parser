@@ -8,9 +8,11 @@ class PlanikParser::Transformer < Parslet::Transform
     PlanikParser::Leaf.new(x.to_s, value)
   end
 
-  rule(:day_expression => {
+  rule(:string => simple(:x) {x})
+
+  rule(:dienst_expression => {
       :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do
-    DayExpression.new(i, p, a, v)
+    PlanikParser::ExpressionNode.new("dienst", i, p, a, v)
   end
 
   rule(:or => { :left => subtree(:left), :right => subtree(:right) }) do

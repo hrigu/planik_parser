@@ -52,5 +52,15 @@ module PlanikParser
       end
     end
 
+    describe "expression node" do
+      it "should transform a dienst_expression" do
+        tree = transform("t0.name = D1")
+        tree.class.name.should eq("PlanikParser::ExpressionNode")
+        tree.name.should eq("dienst")
+      end
+    end
+
+
+
   end
 end

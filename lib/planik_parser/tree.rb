@@ -10,7 +10,7 @@ module PlanikParser
       ident + name
     end
 
-    def eval
+    def evaluate
       raise "implement in subclass"
     end
   end
@@ -23,10 +23,11 @@ module PlanikParser
       @value = value
     end
 
-    def eval
+    def evaluate
       value
     end
   end
+
 
   class InnerNode < Node
     attr_reader :left, :right
@@ -47,13 +48,20 @@ module PlanikParser
 
   end
 
+  class ExpressionNode < Leaf
+    def initialize(name, index, property, comparator, value)
+      super(name, nil)#      :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do
+    end
+
+  end
+
   class AndNode < InnerNode
     def initialize(left, right)
       super("and", left, right)
     end
 
-    def eval
-      left.eval && right.eval
+    def evaluate
+      left.evaluate && right.evaluate
     end
 
   end
@@ -63,18 +71,19 @@ module PlanikParser
       super("or", left, right)
     end
 
-    def eval
-      left.eval || right.eval
+    def evaluate
+      left.evaluate || right.evaluate
     end
   end
 
   class NotNode < InnerNode
     def initialize(child)
+      puts child.to_s
       super("not", child, nil)
     end
 
-    def eval
-      !left.eval
+    def evaluate
+      !left.evaluate
     end
   end
 
