@@ -9,7 +9,7 @@ module PlanikParser
     def result
       rule = example.metadata[:description]
       tree = tree_builder.build(rule)
-      tree.evaluate
+      tree.evaluate "dummy"
     end
 
     describe "boolean algebra" do
@@ -20,8 +20,18 @@ module PlanikParser
       it("not false or true") { result.should be true }
     end
 
-    describe "with expressions" do
-      it("not (t0.name=D1 or t0.typ !in (DIENST, FREI))") { result() }
+#    describe "with expressions" do
+#      it("not (t0.name=D1 or t0.typ !in (DIENST, FREI))") { result() }
+#    end
+
+    context "with situation" do
+      it "simple" do
+        situation = SituationBuilder.new.simple
+        #pp situation
+        tree = tree_builder.build "t0.name=D1"
+        evaluator = Evaluator.new(tree, situation)
+        evaluator.evaluate.should eq true
+      end
     end
   end
 

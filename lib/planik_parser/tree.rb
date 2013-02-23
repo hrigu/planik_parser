@@ -8,7 +8,7 @@ module PlanikParser
       ident + name
     end
 
-    def evaluate
+    def evaluate evaluator
       raise "implement in subclass"
     end
 
@@ -29,9 +29,6 @@ module PlanikParser
       @value = value
     end
 
-    def evaluate
-      value
-    end
     def to_s ident = ""
       super(ident) + " "+value.to_s
     end
@@ -65,10 +62,12 @@ module PlanikParser
 
   class ExpressionNode < Leaf
     attr_reader :index, :property, :comparator
+
     def initialize(index, property, comparator, value)
       super(value)
       @index, @property, @comparator = index, property, comparator
     end
+
     def to_s ident = ""
       ident+name + " "+index.to_s+" "+property+" "+comparator+" "+value.to_s
     end
@@ -76,28 +75,40 @@ module PlanikParser
 
   end
 
-  class DienstNode < ExpressionNode ; end
-  class DiensttypNode < ExpressionNode ; end
-  class WochentagNode < ExpressionNode ; end
-  class TagFreiNode < ExpressionNode ; end
+  class DienstNode < ExpressionNode
+    def evaluate evaluator
+      evaluator.tag(index).dienst.name == value
+    end
+  end
+
+  class DiensttypNode < ExpressionNode;
+  end
+  class WochentagNode < ExpressionNode;
+  end
+  class TagFreiNode < ExpressionNode;
+  end
 
 
   class BooleanNode < Leaf
     def initialize value
       super value
     end
+
+    def evaluate evaluator
+      value
+    end
   end
 
   class AndNode < InnerNode
-    def evaluate
-      left.evaluate && right.evaluate
+    def evaluate evaluator
+      left.evaluate(evaluator) && right.evaluate(evaluator)
     end
 
   end
 
   class OrNode < InnerNode
-    def evaluate
-      left.evaluate || right.evaluate
+    def evaluate evaluator
+      left.evaluate(evaluator) || right.evaluate(evaluator)
     end
   end
 
@@ -106,13 +117,14 @@ module PlanikParser
       super(child, nil)
     end
 
-    def evaluate
-      !left.evaluate
+    def evaluate evaluator
+      !left.evaluate evaluator
     end
   end
 
   class Tree
     attr_reader :root
+
     def initialize root
       @root = root
     end
@@ -125,8 +137,8 @@ module PlanikParser
       root.to_s
     end
 
-    def evaluate
-      root.evaluate
+    def evaluate evaluator
+      root.evaluate evaluator
     end
 
   end
