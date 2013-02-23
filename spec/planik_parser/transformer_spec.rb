@@ -87,16 +87,16 @@ module PlanikParser
         ast.class.should eq(PlanikParser::DienstNode)
         ast.name.should eq("Dienst")
         ast.property.should eq("name")
-        ast.comparator.should eq("in")
+        ast.comparator.class.should eq(InComparator)
         ast.value.should eq(["D1", "D2"])
       end
       it "should transform a diensttypen_expression" do
         ast = transform("t0.typ !in (DIENST, FREI)")
         puts ast.to_s
-        ast.class.should eq(PlanikParser::DiensttypNode)
+        ast.class.should eq(DiensttypNode)
         ast.name.should eq("Diensttyp")
         ast.property.should eq("typ")
-        ast.comparator.should eq("!in")
+        ast.comparator.class.should eq(NotInComparator)
         ast.value.should eq(["DIENST", "FREI"])
       end
       it "should transform a wochentage_expression" do
@@ -106,7 +106,6 @@ module PlanikParser
         ast.name.should eq("Wochentag")
         ast.index.should eq 8
         ast.property.should eq("wochentag")
-        ast.comparator.should eq("!in")
         ast.value.should eq(["Mo", "Fr"])
       end
     end

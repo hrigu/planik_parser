@@ -59,17 +59,61 @@ module PlanikParser
     end
 
   end
+  class Comparator
+    attr_reader :node
+    def initialize string_representation, node
+      @string_representation, @node = string_representation, node
+    end
+    def to_s
+      @string_representation
+    end
+  end
+  class EqualComparator < Comparator
+    def compare_with(target)
+      node.value == target
+    end
+  end
+  class NotComparator < Comparator
+    def compare_with(target)
+      node.value != target
+    end
+  end
+  class InComparator < Comparator
+    def compare_with(target)
+      node.value.include? target
+    end
+  end
+  class NotInComparator < Comparator
+    def compare_with(target)
+      ! node.value.include? target
+    end
+  end
 
   class ExpressionNode < Leaf
     attr_reader :index, :property, :comparator
 
     def initialize(index, property, comparator, value)
       super(value)
-      @index, @property, @comparator = index, property, comparator
+      @index, @property = index, property
+      @comparator = build_comparator comparator
     end
 
     def to_s ident = ""
-      ident+name + " "+index.to_s+" "+property+" "+comparator+" "+value.to_s
+      ident+name + " "+index.to_s+" "+property+" "+comparator.to_s+" "+value.to_s
+    end
+
+    private
+    def build_comparator c
+      case c
+        when "="
+          EqualComparator.new c, self
+        when "!="
+          NotComparator.new c, self
+        when "in"
+          InComparator.new c, self
+        when "!in"
+          NotInComparator.new c, self
+      end
     end
 
 
@@ -77,7 +121,7 @@ module PlanikParser
 
   class DienstNode < ExpressionNode
     def evaluate evaluator
-      evaluator.tag(index).dienst.name == value
+      comparator.compare_with(evaluator.tag(index).dienst.name)
     end
   end
 
