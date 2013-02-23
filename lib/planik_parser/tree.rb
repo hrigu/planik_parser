@@ -67,7 +67,7 @@ module PlanikParser
     attr_reader :index, :property, :comparator
     def initialize(index, property, comparator, value)
       super(value)
-      @index, @property, @comparator = index, property, comparator#      :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do
+      @index, @property, @comparator = index, property, comparator
     end
     def to_s ident = ""
       ident+name + " "+index.to_s+" "+property+" "+comparator+" "+value.to_s
