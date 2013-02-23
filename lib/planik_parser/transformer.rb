@@ -9,6 +9,7 @@ class PlanikParser::Transformer < Parslet::Transform
   end
 
   rule(:string => simple(:x)) {x.to_s}
+  rule(:integer => simple(:x)) {x.to_i}
   rule(:wochentag => simple(:x)) {x.to_s}
 
   rule(:dienst_expression => {

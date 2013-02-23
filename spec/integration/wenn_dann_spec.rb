@@ -4,16 +4,12 @@ module PlanikParser
 
   describe "wenn_dann" do
 
-    let(:parser) { Parser.new }
-    let(:transformer) { Transformer.new }
+    let(:tree_builder) { TreeBuilder.new }
 
     def result
       rule = example.metadata[:description]
-      tree = parser.parse(rule)
-      puts tree
-      ast = transformer.apply(tree)
-      puts ast.to_s
-      ast.evaluate
+      tree = tree_builder.build(rule)
+      tree.evaluate
     end
 
     describe "boolean algebra" do

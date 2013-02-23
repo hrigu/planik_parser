@@ -23,7 +23,7 @@ module PlanikParser
       it "should transform" do
         ast = transform("true")
         ast.class.should eql (PlanikParser::BooleanNode)
-        ast.to_s.should eql ("Boolean")
+        ast.name.should eql ("Boolean")
         ast.value.should eql true
       end
     end
@@ -100,10 +100,11 @@ module PlanikParser
         ast.value.should eq(["DIENST", "FREI"])
       end
       it "should transform a wochentage_expression" do
-        ast = transform("t0.wochentag !in (Mo, Fr)")
+        ast = transform("t8.wochentag !in (Mo, Fr)")
         puts ast.to_s
         ast.class.should eq(PlanikParser::WochentagNode)
         ast.name.should eq("Wochentag")
+        ast.index.should eq 8
         ast.property.should eq("wochentag")
         ast.comparator.should eq("!in")
         ast.value.should eq(["Mo", "Fr"])

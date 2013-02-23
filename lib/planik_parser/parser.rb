@@ -9,7 +9,7 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:comma) { str(",") >> space? }
 
   rule(:d) { match('[0-9]') }
-  rule(:integer) { d.repeat(1) }
+  rule(:integer) { d.repeat(1).as(:integer) }
   rule(:string) { match('[A-Za-z0-9]').repeat(1).as(:string) >> space? }
 
 

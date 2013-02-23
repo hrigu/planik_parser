@@ -54,7 +54,7 @@ module PlanikParser
 
         context "return" do
           it "should return the index as string which represents an integer" do
-            x = rule.parse("t456")[:index].should == "456"
+            x = rule.parse("t456")[:index][:integer].should == "456"
           end
         end
 

@@ -15,6 +15,11 @@ module PlanikParser
     def name
       self.class.name.split("::")[1].sub("Node", "")
     end
+
+    def visit
+      yield self
+    end
+
   end
 
   class Leaf < Node
@@ -26,6 +31,9 @@ module PlanikParser
 
     def evaluate
       value
+    end
+    def to_s ident = ""
+      super(ident) + " "+value.to_s
     end
   end
 
@@ -39,12 +47,18 @@ module PlanikParser
     end
 
     def to_s ident = ""
-      l = left.to_s(ident +" ")
-      r = right.to_s(ident +" ") if right
-      o = super(ident)
-      s = "#{o}\n#{l}"
-      s += "\n#{r}" if r
-      s
+      left_s = left.to_s(ident +" ")
+      right_s = right.to_s(ident +" ") if right
+      self_s = super(ident)
+      string = "#{self_s}\n#{left_s}"
+      string += "\n#{right_s}" if right_s
+      string
+    end
+
+    def visit &block
+      yield self
+      left.visit &block
+      right.visit if right
     end
 
   end
@@ -55,6 +69,10 @@ module PlanikParser
       super(value)
       @index, @property, @comparator = index, property, comparator#      :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do
     end
+    def to_s ident = ""
+      ident+name + " "+index.to_s+" "+property+" "+comparator+" "+value.to_s
+    end
+
 
   end
 
@@ -93,5 +111,19 @@ module PlanikParser
     end
   end
 
+  class Tree
+    attr_reader :root
+    def initialize root
+      @root = root
+    end
 
+    def visit &block
+      root.visit &block
+    end
+
+    def evaluate
+      root.evaluate
+    end
+
+  end
 end
