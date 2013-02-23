@@ -76,7 +76,7 @@ module PlanikParser
       context "diensttyp_expression" do
         let(:rule) { subject.diensttyp_expression }
         it "should parse 't0.typ = DIENST'" do
-          rule.should parse("t0.typ = DIENST")
+          rule.should parse("t0.typ = DIENST ")
           pp rule.parse "t0.typ = DIENST"
         end
       end
@@ -84,6 +84,7 @@ module PlanikParser
         let(:rule) { subject.wochentag_expression }
         it "should parse 't0.wochentag = Mo'" do
           rule.should parse("t0.wochentag = Mo")
+          rule.should parse("t0.wochentag = Mo ")
           pp rule.parse "t0.wochentag = Di"
         end
       end
@@ -153,9 +154,9 @@ module PlanikParser
       end
     end
 
-    context "parser" do
+    context "combined rules" do
       it "should parse a whole string" do
-        pp subject.parse("t0.name = D1")
+        pp subject.parse("t0.typ = DIENST and t2.name = D1 or not t3.wochentag in ( Di, Fr ) or not t1.wochentag = Mo")
       end
     end
   end

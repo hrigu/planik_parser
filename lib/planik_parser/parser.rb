@@ -21,7 +21,7 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:besetzt_value) { (str("frei") | str("besetzt")).as(:besetzt) >> space? }
   rule(:date_time_value) { date | time | date_time | integer } #TODO warum auch integer?
 
-  rule(:wochentag) { (str("Mo") | str("Di")| str("Mi") | str("Do") | str("Fr") | str("Sa") | str("So")).as(:wochentag) }
+  rule(:wochentag) { (str("Mo") | str("Di")| str("Mi") | str("Do") | str("Fr") | str("Sa") | str("So")).as(:wochentag) >> space?}
 
   rule(:strings) { lparen>>(string >> (comma >> string).repeat).as(:strings) >> rparen }
   rule(:wochentage) { lparen>>(wochentag >> (comma >> wochentag).repeat).as(:wochentage) >> rparen }

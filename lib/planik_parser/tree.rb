@@ -121,6 +121,10 @@ module PlanikParser
       root.visit &block
     end
 
+    def to_s
+      root.to_s
+    end
+
     def evaluate
       root.evaluate
     end
