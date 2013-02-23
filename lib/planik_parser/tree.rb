@@ -1,10 +1,8 @@
 module PlanikParser
+
   class Node
     attr_reader :name
-
-    def initialize name
-      @name = name
-    end
+    attr_reader :parent
 
     def to_s ident = ""
       ident + name
@@ -13,13 +11,16 @@ module PlanikParser
     def evaluate
       raise "implement in subclass"
     end
+
+    def name
+      self.class.name.split("::")[1].sub("Node", "")
+    end
   end
 
   class Leaf < Node
     attr_reader :value
 
-    def initialize name, value
-      super(name)
+    def initialize value
       @value = value
     end
 
@@ -32,8 +33,8 @@ module PlanikParser
   class InnerNode < Node
     attr_reader :left, :right
 
-    def initialize name, left, right
-      super(name)
+    def initialize left, right
+      super()
       @left, @right = left, right
     end
 
@@ -50,18 +51,26 @@ module PlanikParser
 
   class ExpressionNode < Leaf
     attr_reader :index, :property, :comparator
-    def initialize(name, index, property, comparator, value)
-      super(name, value)
+    def initialize(index, property, comparator, value)
+      super(value)
       @index, @property, @comparator = index, property, comparator#      :index => simple(:i), :property => simple(:p), :comparator => simple(:a), :value => simple(:v)}) do
     end
 
   end
 
-  class AndNode < InnerNode
-    def initialize(left, right)
-      super("and", left, right)
-    end
+  class DienstNode < ExpressionNode ; end
+  class DiensttypNode < ExpressionNode ; end
+  class WochentagNode < ExpressionNode ; end
+  class TagFreiNode < ExpressionNode ; end
 
+
+  class BooleanNode < Leaf
+    def initialize value
+      super value
+    end
+  end
+
+  class AndNode < InnerNode
     def evaluate
       left.evaluate && right.evaluate
     end
@@ -69,10 +78,6 @@ module PlanikParser
   end
 
   class OrNode < InnerNode
-    def initialize(left, right)
-      super("or", left, right)
-    end
-
     def evaluate
       left.evaluate || right.evaluate
     end
@@ -80,7 +85,7 @@ module PlanikParser
 
   class NotNode < InnerNode
     def initialize(child)
-      super("not", child, nil)
+      super(child, nil)
     end
 
     def evaluate
