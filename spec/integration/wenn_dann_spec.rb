@@ -28,7 +28,7 @@ module PlanikParser
       it "simple" do
         situation = SituationBuilder.new.simple
         #pp situation
-        tree = tree_builder.build "t0.name=D1"
+        tree = tree_builder.build "t0.name = D1"
         evaluator = Evaluator.new(tree, situation)
         evaluator.evaluate.should eq true
       end

@@ -70,12 +70,12 @@ module PlanikParser
   end
   class EqualComparator < Comparator
     def compare_with(target)
-      node.value == target
+      target ? node.value == target : nil
     end
   end
   class NotComparator < Comparator
     def compare_with(target)
-      node.value != target
+      target ? node.value != target : nil
     end
   end
   class InComparator < Comparator
@@ -126,6 +126,9 @@ module PlanikParser
   end
 
   class DiensttypNode < ExpressionNode;
+    def evaluate evaluator
+      comparator.compare_with(evaluator.tag(index).dienst.typ)
+    end
   end
   class WochentagNode < ExpressionNode;
   end

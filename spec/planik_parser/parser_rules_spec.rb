@@ -142,7 +142,7 @@ module PlanikParser
       end
 
 
-      context "day_expression" do
+      context "wochentag_expression" do
         let(:rule) { subject.day_expression }
         it "should parse a wochentag_expression'" do
           rule.should parse("t0.wochentag = Mo")
