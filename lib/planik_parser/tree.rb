@@ -2,7 +2,7 @@ module PlanikParser
 
   class Node
     attr_reader :name
-    attr_reader :parent
+    attr_accessor :parent
 
     def to_s ident = ""
       ident + name
@@ -58,7 +58,7 @@ module PlanikParser
     def visit &block
       yield self
       left.visit &block
-      right.visit if right
+      right.visit &block if right
     end
 
   end
