@@ -174,9 +174,14 @@ module PlanikParser
 
   class Tree
     attr_reader :root
+    attr_accessor :min_index, :max_index
 
     def initialize root
       @root = root
+    end
+
+    def breite
+      max_index - min_index
     end
 
     def visit &block
@@ -190,6 +195,8 @@ module PlanikParser
     def evaluate evaluator
       root.evaluate evaluator
     end
+
+
 
   end
 end
