@@ -7,7 +7,8 @@ module PlanikParser
       let(:expression) { WochentagNode.new(0, "wochentag", "=", "Mo") }
 
       it "should return true when Wochentage match" do
-        expression.evaluate(DummyEvaluatorBuilder.wochentag("Mo")).should eq true
+        builder_wochentag = DummyEvaluatorBuilder.wochentag("Mo")
+        expression.evaluate(builder_wochentag).should eq true
       end
       it "should return false when Wochentage don't match" do
         expression.evaluate(DummyEvaluatorBuilder.wochentag("Di")).should eq false

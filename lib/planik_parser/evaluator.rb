@@ -28,7 +28,7 @@ module PlanikParser
         when DiensttypNode
           self.tag(node.index).dienst.nil? ? nil : self.tag(node.index).dienst.typ
         when WochentagNode
-          self.tag(node.index).name
+          self.tag(node.index).wochentag
       end
     end
 

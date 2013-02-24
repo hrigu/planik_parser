@@ -1,16 +1,24 @@
+require 'date'
+
 module PlanikParser
   class Situation
-    attr_accessor :tage
-    def initialize tage
-      @tage = tage
+    attr_accessor :tage, :start_date
+    def initialize start_date
+      @start_date = start_date
     end
+
   end
 
   class Tag
-    attr_accessor :dienst, :name
+    attr_accessor :dienst, :date
+    @@wochentage = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
 
-    def initialize name, dienst
-      @name, @dienst = name, dienst
+    def initialize dienst
+      @dienst = dienst
+    end
+
+    def wochentag
+      @@wochentage[date.wday]
     end
   end
 
@@ -40,28 +48,36 @@ module PlanikParser
 
   class SituationBuilder
     def simple
+      situation = Situation.new Date.parse("2013-01-07")
       diensttypen = ["DIENST", "FERIEN"]
       dienstart = Dienstart.new("D1", diensttypen[0])
       dienst = Dienst.new(dienstart)
-      tag = Tag.new("Mo", dienst)
+      tag = Tag.new(dienst)
       tag.dienst = dienst
-      situation = Situation.new [tag]
+      situation.days = [tag]
       situation
     end
 
     def create_day day_spec
       if (day_spec.empty?)
-        Tag.new("name", nil)
+        Tag.new(nil)
         else
-          Tag.new("name", Dienst.new(Dienstart.new(day_spec[:name], day_spec[:typ])))
+          Tag.new(Dienst.new(Dienstart.new(day_spec[:name], day_spec[:typ])))
       end
     end
 
     def build spec
-      days = spec.map do |day_spec|
+      start_date = spec[:start_datum] ||= Date.parse("2013-01-07") #start an einem Montag
+      situation = Situation.new(start_date)
+      days = spec[:tage].map do |day_spec|
         create_day(day_spec)
       end
-      Situation.new(days)
+
+      days.each_with_index do |d, i|
+        d.date = start_date.next_day(i)
+      end
+      situation.tage = days;
+      situation
     end
 
 

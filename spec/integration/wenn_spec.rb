@@ -9,7 +9,7 @@ module PlanikParser
     context "combination of expressions" do
       context "same day" do
         context "or" do
-          let(:situation) { SituationBuilder.new.build([{name: "D1", typ: "DIENST"}]) }
+          let(:situation) { SituationBuilder.new.build(tage: [{name: "D1", typ: "DIENST"}]) }
 
           it "example with true" do
             tree = tree_builder.build "t0.name = D1 or t0.typ != DIENST"
@@ -27,7 +27,7 @@ module PlanikParser
 
       context "two days with different dienste" do
         context "or" do
-          let(:situation) { SituationBuilder.new.build([{name: "D1", typ: "DIENST"}, {name: "D2", typ: "DIENST"}]) }
+          let(:situation) { SituationBuilder.new.build(tage: [{name: "D1", typ: "DIENST"}, {name: "D2", typ: "DIENST"}]) }
 
           it "example with true" do
             tree = tree_builder.build "t0.name = D1 and t1.name = D2"
@@ -46,13 +46,13 @@ module PlanikParser
 
     context "Mehrere Zeitfenster" do
       let(:situation) {
-        SituationBuilder.new.build([
-                                       {name: "D1", typ: "DIENST"},
-                                       {name: "D2", typ: "DIENST"},
-                                       {name: "F", typ: "FERIEN"},
-                                       {},#freier Tag
-                                       {name: "D1", typ: "DIENST"}
-                                   ]) }
+        SituationBuilder.new.build(tage: [
+            {name: "D1", typ: "DIENST"},
+            {name: "D2", typ: "DIENST"},
+            {name: "F", typ: "FERIEN"},
+            {}, #freier Tag
+            {name: "D1", typ: "DIENST"}
+        ]) }
 
       it "Regel an einem Tag" do
         tree = tree_builder.build "t0.name = D1"
@@ -63,6 +63,11 @@ module PlanikParser
         tree = tree_builder.build "t0.name = D1 or t1.typ = FERIEN"
         evaluator = Evaluator.new(tree, situation)
         evaluator.evaluate.should eq [true, true, nil, false]
+      end
+      it "Regel mit zwei auf einander folgenden Tage" do
+        tree = tree_builder.build "t0.name = D1 or t2.wochentag = Mo"
+        evaluator = Evaluator.new(tree, situation)
+        evaluator.evaluate.should eq [true, false, false]
       end
 
     end
