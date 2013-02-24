@@ -148,6 +148,7 @@ module PlanikParser
 
   class AndNode < InnerNode
     def evaluate evaluator
+#      puts "And: evaluate"
       left.evaluate(evaluator) && right.evaluate(evaluator)
     end
 
@@ -155,6 +156,7 @@ module PlanikParser
 
   class OrNode < InnerNode
     def evaluate evaluator
+#      puts "Or: evaluate"
       left.evaluate(evaluator) || right.evaluate(evaluator)
     end
   end
@@ -165,6 +167,7 @@ module PlanikParser
     end
 
     def evaluate evaluator
+#      puts "Not: evaluate"
       !left.evaluate evaluator
     end
   end

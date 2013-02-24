@@ -1,20 +1,33 @@
 module PlanikParser
   class DummyEvaluator
-    def initialize dienst_name, typ
-      @dienst_name, @typ = dienst_name, typ
+    attr_accessor :tree
+    def initialize tage
+      @tage = tage#@dienst_name, @typ = dienst_name, typ
+    end
+
+    def evaluate
+      tree.evaluate(self)
     end
 
     def tag index
-      Tag.new("name", Dienst.new(Dienstart.new(@dienst_name, @typ)))
+      @tage[index]#
     end
+
+
   end
 
   class DummyEvaluatorBuilder
+
+    def self.create_day name, typ
+      Tag.new("name", Dienst.new(Dienstart.new(name, typ)))
+    end
+
     def self.name name
-      DummyEvaluator.new(name, "typ")
+      DummyEvaluator.new([create_day(name, "typ")])
     end
     def self.typ typ
-      DummyEvaluator.new("name", typ)
+      DummyEvaluator.new([create_day("name", typ)])
     end
+
   end
 end

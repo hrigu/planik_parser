@@ -4,7 +4,7 @@ module PlanikParser
 
   describe DienstNode do
     context "comparator: =" do
-      let(:expression) { DienstNode.new(13, "name", "=", "D1") }
+      let(:expression) { DienstNode.new(0, "name", "=", "D1") }
 
       it "should return true when name is equal dienst_name of evaluator" do
         expression.evaluate(DummyEvaluatorBuilder.name("D1")).should eq true
@@ -15,7 +15,7 @@ module PlanikParser
     end
 
     context "comparator: !=" do
-      let(:expression) { DienstNode.new(13, "name", "!=", "D1") }
+      let(:expression) { DienstNode.new(0, "name", "!=", "D1") }
 
       it "should return false when name is equal dienst_name of evaluator" do
         expression.evaluate(DummyEvaluatorBuilder.name("D1")).should eq false
@@ -26,7 +26,7 @@ module PlanikParser
     end
 
     context "comparator: in" do
-      let(:expression) { DienstNode.new(13, "name", "in", ["D1", "D3"]) }
+      let(:expression) { DienstNode.new(0, "name", "in", ["D1", "D3"]) }
 
       it "should return true when name is in array" do
         expression.evaluate(DummyEvaluatorBuilder.name("D1")).should eq true
@@ -37,7 +37,7 @@ module PlanikParser
     end
 
     context "comparator: !in" do
-      let(:expression) { DienstNode.new(13, "name", "!in", ["D1", "D3"]) }
+      let(:expression) { DienstNode.new(0, "name", "!in", ["D1", "D3"]) }
 
       it "should return false when name is in array" do
         expression.evaluate(DummyEvaluatorBuilder.name("D1")).should eq false

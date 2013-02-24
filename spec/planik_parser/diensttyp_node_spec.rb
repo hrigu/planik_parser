@@ -4,7 +4,7 @@ module PlanikParser
 
   describe DiensttypNode do
     context "comparator: =" do
-      let(:expression) { DiensttypNode.new(13, "typ", "=", "DIENST") }
+      let(:expression) { DiensttypNode.new(0, "typ", "=", "DIENST") }
 
       it "should return true when Typ is equal typ of evaluator" do
         expression.evaluate(DummyEvaluatorBuilder.typ("DIENST")).should eq true
