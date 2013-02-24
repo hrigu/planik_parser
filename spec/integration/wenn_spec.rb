@@ -50,18 +50,19 @@ module PlanikParser
                                        {name: "D1", typ: "DIENST"},
                                        {name: "D2", typ: "DIENST"},
                                        {name: "F", typ: "FERIEN"},
+                                       {},#freier Tag
                                        {name: "D1", typ: "DIENST"}
                                    ]) }
 
       it "Regel an einem Tag" do
         tree = tree_builder.build "t0.name = D1"
         evaluator = Evaluator.new(tree, situation)
-        evaluator.evaluate.should eq [true, false, false, true]
+        evaluator.evaluate.should eq [true, false, false, nil, true]
       end
       it "Regel mit zwei auf einander folgenden Tage" do
         tree = tree_builder.build "t0.name = D1 or t1.typ = FERIEN"
         evaluator = Evaluator.new(tree, situation)
-        evaluator.evaluate.should eq [true, true, false]
+        evaluator.evaluate.should eq [true, true, nil, false]
       end
 
     end

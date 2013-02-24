@@ -102,6 +102,10 @@ module PlanikParser
       ident+name + " "+index.to_s+" "+property+" "+comparator.to_s+" "+value.to_s
     end
 
+    def evaluate evaluator
+      comparator.compare_with(evaluator.value_for_node(self))
+    end
+
     private
     def build_comparator c
       case c
@@ -115,20 +119,18 @@ module PlanikParser
           NotInComparator.new c, self
       end
     end
-
-
   end
 
   class DienstNode < ExpressionNode
-    def evaluate evaluator
-      comparator.compare_with(evaluator.tag(index).dienst.name)
-    end
+#    def evaluate evaluator
+#      comparator.compare_with(evaluator.tag(index).dienst.name)
+#    end
   end
 
   class DiensttypNode < ExpressionNode;
-    def evaluate evaluator
-      comparator.compare_with(evaluator.tag(index).dienst.typ)
-    end
+#    def evaluate evaluator
+#      comparator.compare_with(evaluator.tag(index).dienst.typ)
+#    end
   end
   class WochentagNode < ExpressionNode;
   end

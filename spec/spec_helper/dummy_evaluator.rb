@@ -9,6 +9,16 @@ module PlanikParser
       tree.evaluate(self)
     end
 
+    def value_for_node node
+      case node
+        when DienstNode
+          self.tag(node.index).dienst.name
+        when DiensttypNode
+          self.tag(node.index).dienst.typ
+      end
+    end
+
+
     def tag index
       @tage[index]#
     end

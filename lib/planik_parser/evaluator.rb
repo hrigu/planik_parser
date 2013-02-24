@@ -21,6 +21,15 @@ module PlanikParser
       result
     end
 
+    def value_for_node node
+      case node
+        when DienstNode
+          self.tag(node.index).dienst.nil? ? nil : self.tag(node.index).dienst.name
+        when DiensttypNode
+          self.tag(node.index).dienst.nil? ? nil : self.tag(node.index).dienst.typ
+      end
+    end
+
     def tag relative_day_index
       day_index = @current_day_index +relative_day_index
       @situation.tage[day_index]

@@ -45,18 +45,21 @@ module PlanikParser
       dienst = Dienst.new(dienstart)
       tag = Tag.new("Mo", dienst)
       tag.dienst = dienst
-      situation = Situation.new
-      situation.tage=[tag]
+      situation = Situation.new [tag]
       situation
     end
 
-    def create_day name, typ
-      Tag.new("name", Dienst.new(Dienstart.new(name, typ)))
+    def create_day day_spec
+      if (day_spec.empty?)
+        Tag.new("name", nil)
+        else
+          Tag.new("name", Dienst.new(Dienstart.new(day_spec[:name], day_spec[:typ])))
+      end
     end
 
     def build spec
       days = spec.map do |day_spec|
-        create_day(day_spec[:name], day_spec[:typ])
+        create_day(day_spec)
       end
       Situation.new(days)
     end
