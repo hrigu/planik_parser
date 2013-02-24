@@ -67,7 +67,7 @@ module PlanikParser
     end
 
     def build spec
-      start_date = spec[:start_datum] ||= Date.parse("2013-01-07") #start an einem Montag
+      start_date = spec[:start_datum] #||= Date.parse("2013-01-07") #start an einem Montag
       situation = Situation.new(start_date)
       days = spec[:tage].map do |day_spec|
         create_day(day_spec)

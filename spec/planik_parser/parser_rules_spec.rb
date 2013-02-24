@@ -43,8 +43,8 @@ module PlanikParser
       end
 
 
-      context "day" do
-        let(:rule) { subject.day }
+      context "tag" do
+        let(:rule) { subject.tag }
         it "should parse 't0'" do
           rule.should parse("t0")
         end

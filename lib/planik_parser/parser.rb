@@ -39,18 +39,18 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:and_operator) { str("and") >> space? }
   rule(:or_operator) { str("or") >> space? }
 
-  rule(:day) { str('t') >> integer.as(:index) }
+  rule(:tag) { str('t') >> integer.as(:index) }
 
-  rule(:dienst_expression) { (day >> dienst_property >> comparator >> string.as(:value)).as(:dienst_expression) }
-  rule(:diensttyp_expression) { (day >> diensttyp_property >> comparator >> string.as(:value)).as(:diensttyp_expression) }
-  rule(:wochentag_expression) { (day >> wochentag_property >> comparator >> wochentag.as(:value)).as(:wochentag_expression) }
+  rule(:dienst_expression) { (tag >> dienst_property >> comparator >> string.as(:value)).as(:dienst_expression) }
+  rule(:diensttyp_expression) { (tag >> diensttyp_property >> comparator >> string.as(:value)).as(:diensttyp_expression) }
+  rule(:wochentag_expression) { (tag >> wochentag_property >> comparator >> wochentag.as(:value)).as(:wochentag_expression) }
 
-  rule(:dienste_expression) { (day >> dienst_property >> in_comparator >> strings).as(:dienste_expression) }
-  rule(:diensttypen_expression) { (day >> diensttyp_property >> in_comparator >> strings).as(:diensttypen_expression) }
-  rule(:wochentage_expression) { (day >> wochentag_property >> in_comparator >> wochentage).as(:wochentage_expression) }
+  rule(:dienste_expression) { (tag >> dienst_property >> in_comparator >> strings).as(:dienste_expression) }
+  rule(:diensttypen_expression) { (tag >> diensttyp_property >> in_comparator >> strings).as(:diensttypen_expression) }
+  rule(:wochentage_expression) { (tag >> wochentag_property >> in_comparator >> wochentage).as(:wochentage_expression) }
 
-  rule(:besetzt_expression) { (day >> str(".") >> besetzt_value).as(:besetzt_expression) }
-  rule(:int_expression) { (day >> int_property >> int_comparator >> date_time_value).as(:int_expression) }
+  rule(:besetzt_expression) { (tag >> str(".") >> besetzt_value).as(:besetzt_expression) }
+  rule(:int_expression) { (tag >> int_property >> int_comparator >> date_time_value).as(:int_expression) }
 
 
   #TODO LFunctionCompare: 't' operand:LNumber '.' operand:IntProperty > operand:IntComparator > operand:LConst
@@ -61,7 +61,7 @@ class PlanikParser::Parser < Parslet::Parser
   rule(:day_expression) { (
     dienst_expression | diensttyp_expression | wochentag_expression |
     dienste_expression | diensttypen_expression | wochentage_expression |
-    besetzt_expression | int_expression) } #(day >> str(".") >> property >> comparator >> value).as(:day_expression)
+    besetzt_expression | int_expression) } #(tag >> str(".") >> property >> comparator >> value).as(:day_expression)
 
   rule(:expression) { bool_value | day_expression }
 
