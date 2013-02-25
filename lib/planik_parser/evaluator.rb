@@ -2,39 +2,47 @@ require 'planik_parser/tree'
 module PlanikParser
 
   class Evaluator
-
+    attr_reader :tree, :situation
     def initialize tree, situation
       @tree, @situation = tree, situation
-      @current_day_index = 0
+      @relative_day_index = 0 - @tree.min_index
     end
 
     ##
-    # Berechnet für jedes Fenster das Resultat
-    # Das Fenster schiebt sich über die Situation
+    # Berechnet für jedes Fenster das Resultat.
+    # situation.tage:                               0, 1, 2, 3, 4
+    # Fenster einer Regel mit Breite 3:                               Resultat
+    # erster Durchgang                              -     -           -> [x]
+    # zweiter Durchgang                                -     -        -> [x, y]
+    # dritter Durchgang                                   -     -     -> [x, y, z]
+
+
+    # Das Fenster schiebt sich über die Situation.
+    # @return Ein Array von boolean Werten (true, false, nil) der Auswertungen des Trees über den einzelnen Fenster
     ##
     def evaluate
       result = []
-      (0..(@situation.tage.size - 1 - @tree.breite)).each do |n|
-        @current_day_index = n
+      start_i = 0 - @tree.min_index
+      end_i = @situation.tage.size - @tree.min_index - @tree.breite
+      (start_i..end_i).each do |n|
+        @relative_day_index = n
         result << @tree.evaluate(self)
       end
       result
     end
 
     def value_for_node node
+      day_index = @relative_day_index +node.index
+      current_tag =  @situation.tage[day_index]
       case node
         when DienstNode
-          self.tag(node.index).dienst.nil? ? nil : self.tag(node.index).dienst.name
+          current_tag.dienst.nil? ? nil : current_tag.dienst.name
         when DiensttypNode
-          self.tag(node.index).dienst.nil? ? nil : self.tag(node.index).dienst.typ
+          current_tag.dienst.nil? ? nil : current_tag.dienst.typ
         when WochentagNode
-          self.tag(node.index).wochentag
+          current_tag.wochentag
       end
     end
 
-    def tag relative_day_index
-      day_index = @current_day_index +relative_day_index
-      @situation.tage[day_index]
-    end
   end
 end

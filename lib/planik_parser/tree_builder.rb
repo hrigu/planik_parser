@@ -8,6 +8,12 @@ module PlanikParser
       @parser = PlanikParser::Parser.new
       @transformer = PlanikParser::Transformer.new
     end
+
+    ##
+    # Erstellt einen Baum aus einem String, der einen bool'schen Ausdruck ist, welche den "wenn"  oder "dann" Teil
+    # einer Wenn-Dann-Regel beschreibt
+    # Bsp: t0.name = D1 or t0.typ != DIENST
+    ##
     def build string
       indermediate_tree = @parser.parse(string)
       ast = @transformer.apply(indermediate_tree)
@@ -20,7 +26,7 @@ module PlanikParser
     private
 
     def evaluate_breite(tree)
-      min = 0
+      min = 10000 # Damit er sicher grösser ist als der grösste min_index
       max = 0
       tree.visit do |node|
         if (node.kind_of? PlanikParser::ExpressionNode)

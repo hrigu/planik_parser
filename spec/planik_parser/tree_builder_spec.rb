@@ -17,11 +17,11 @@ module PlanikParser
     end
 
     context "evaluate Breite" do
-      it "evaluates Breite for an expression tree" do
+      it "evaluates Breite for the tree" do
         tree = subject.build("t0.name = D1 and t3.typ in (FREI, ABWESEND) or (t1.wochentag = Di or t2.wochentag = Fr)")
         tree.min_index.should eq 0
         tree.max_index.should eq 3
-        tree.breite.should eq 3
+        tree.breite.should eq 4
       end
     end
   end

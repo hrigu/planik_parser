@@ -176,14 +176,18 @@ module PlanikParser
 
   class Tree
     attr_reader :root
+
+    # Der kleinste und grösste verwendete Tagesindex
     attr_accessor :min_index, :max_index
 
     def initialize root
       @root = root
     end
 
+    # Die Breite des Fensters, welche der Baum über die Tage spannt
+    # Bsp: t0.name=D1 and t1.name=D2 => breite ist 2
     def breite
-      max_index - min_index
+      max_index - min_index + 1
     end
 
     def visit &block

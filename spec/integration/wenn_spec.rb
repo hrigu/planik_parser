@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 require 'spec_helper'
 
 module PlanikParser
@@ -6,47 +8,45 @@ module PlanikParser
 
     let(:tree_builder) { TreeBuilder.new }
 
-    context "combination of expressions" do
-      context "same day" do
-          let(:situation) { SituationBuilder.new.build(
-              start_datum: Date.parse("2013-01-07"), #start an einem Montag,
-              tage: [{name: "D1", typ: "DIENST"}]) }
+    context "Kombination von Ausdrücken" do
+      context "beziehen sich auf den gleichen Tag" do
+        let(:situation) { SituationBuilder.new.build(
+            start_datum: Date.parse("2013-01-07"), #start an einem Montag,
+            tage: [{name: "D1", typ: "DIENST"}]) }
 
-          it "example with true" do
-            tree = tree_builder.build "t0.wochentag = Mo and (t0.name = D1 or t0.typ != DIENST)"
-            evaluator = Evaluator.new(tree, situation)
-            evaluator.evaluate.should eq [true]
-          end
+        it "Beispiel das true gibt" do
+          tree = tree_builder.build "t0.wochentag = Mo and (t0.name = D1 or t0.typ != DIENST)"
+          evaluator = Evaluator.new(tree, situation)
+          evaluator.evaluate.should eq [true]
+        end
 
-          it "example with false" do
-            tree = tree_builder.build "t0.typ = DIENST and t0.name !in (D1, D2)"
-            evaluator = Evaluator.new(tree, situation)
-            evaluator.evaluate.should eq [false]
+        it "Beispiel das false gibt" do
+          tree = tree_builder.build "t0.typ = DIENST and t0.name !in (D1, D2)"
+          evaluator = Evaluator.new(tree, situation)
+          evaluator.evaluate.should eq [false]
         end
       end
 
-      context "two days with different dienste" do
-        context "or" do
-          let(:situation) { SituationBuilder.new.build(
-              start_datum: Date.parse("2013-01-07"), #start an einem Montag,
-              tage: [{name: "D1", typ: "DIENST"}, {name: "D2", typ: "DIENST"}]) }
+      context "beziehen sich auf unterschiedliche Tage" do
+        let(:situation) { SituationBuilder.new.build(
+            start_datum: Date.parse("2013-01-07"), #start an einem Montag,
+            tage: [{name: "D1", typ: "DIENST"}, {name: "D2", typ: "DIENST"}]) }
 
-          it "example with true" do
-            tree = tree_builder.build "t0.name = D1 and t1.name = D2"
-            evaluator = Evaluator.new(tree, situation)
-            evaluator.evaluate.should eq [true]
-          end
-          it "example with false" do
-            tree = tree_builder.build "t0.typ = FERIEN or t1.name = D1"
-            evaluator = Evaluator.new(tree, situation)
-            evaluator.evaluate.should eq [false]
-          end
-
+        it "Bsp das true gibt" do
+          tree = tree_builder.build "t0.name = D1 and t1.name = D2"
+          evaluator = Evaluator.new(tree, situation)
+          evaluator.evaluate.should eq [true]
         end
+        it "Bsp das false gibt" do
+          tree = tree_builder.build "t0.typ = FERIEN or t1.name = D1"
+          evaluator = Evaluator.new(tree, situation)
+          evaluator.evaluate.should eq [false]
+        end
+
       end
     end
 
-    context "Mehrere Zeitfenster" do
+    context "Situation mit mehreren Tage => wird mehrmals abgetastet" do
       let(:situation) {
         SituationBuilder.new.build(
             start_datum: Date.parse("2013-01-04"), #start Freitag

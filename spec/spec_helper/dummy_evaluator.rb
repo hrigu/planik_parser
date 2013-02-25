@@ -9,7 +9,8 @@ module PlanikParser
       situation = Situation.new(Date.parse("2013-01-07"))
       d = yield situation
       situation.tage= [d]
-      Evaluator.new(nil, situation)
+      tree = OpenStruct.new(min_index: 0)
+      Evaluator.new(tree, situation)
     end
 
     def self.create_day(name, typ, situation)
