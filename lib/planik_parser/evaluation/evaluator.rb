@@ -14,8 +14,7 @@ module PlanikParser
     # erster Durchgang                              -     -           -> [x]
     # zweiter Durchgang                                -     -        -> [x, y]
     # dritter Durchgang                                   -     -     -> [x, y, z]
-
-
+    #
     # Das Fenster schiebt sich über die Situation.
     # @return Ein Array von boolean Werten (true, false, nil) der Auswertungen des Trees über den einzelnen Fenster
     ##
