@@ -1,5 +1,4 @@
 require "parslet"
-require 'planik_parser/tree'
 
 class PlanikParser::Transformer < Parslet::Transform
 

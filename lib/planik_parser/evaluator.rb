@@ -1,4 +1,3 @@
-require 'planik_parser/tree'
 module PlanikParser
 
   class Evaluator

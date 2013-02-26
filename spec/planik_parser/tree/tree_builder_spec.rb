@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module PlanikParser
   describe TreeBuilder do
-
+    let(:subject){TreeBuilder.instance}
     it "should build a tree and set parents" do
       tree = subject.build("true and false or true or false or true and false")
       root = tree.root

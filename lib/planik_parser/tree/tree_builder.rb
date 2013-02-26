@@ -1,9 +1,10 @@
-require 'planik_parser/parser'
-require 'planik_parser/transformer'
-require 'planik_parser/tree'
+require 'singleton'
 module PlanikParser
 
   class TreeBuilder
+
+    include Singleton
+
     def initialize
       @parser = PlanikParser::Parser.new
       @transformer = PlanikParser::Transformer.new

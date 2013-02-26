@@ -5,7 +5,7 @@ module PlanikParser
 
 
   describe "boolean algebra" do
-    let(:tree_builder) { TreeBuilder.new }
+    let(:tree_builder) { TreeBuilder.instance }
 
     def result
       rule = example.metadata[:description]
