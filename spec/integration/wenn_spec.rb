@@ -6,7 +6,7 @@ module PlanikParser
 
   describe "wenn" do
 
-    let(:tree_builder) { TreeBuilder.new }
+    let(:tree_builder) { TreeBuilder.instance }
 
     context "Kombination von Ausdrücken" do
       context "beziehen sich auf den gleichen Tag" do
