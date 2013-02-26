@@ -6,7 +6,7 @@ module PlanikParser
 
     context "evaluate" do
       let(:evaluator) do
-        tree = TreeBuilder.instance.build "t7.name=D1 and t6.name=D2"
+        tree = TreeBuilder.instance.build "t1.name=D1 and t0.name=D2"
         situation = SituationBuilder.new.build(
             start_datum: Date.parse("2013-01-07"),
             tage: [{name: "D1", typ: "DIENST"}, {name: "D2", typ: "DIENST"}, {name: "D1", typ: "DIENST"}]

@@ -20,6 +20,12 @@ module PlanikParser
     def wochentag
       @@wochentage[date.wday]
     end
+
+    def to_s
+      dienst_value = dienst.nil? ? "leer" : dienst.to_s
+      date.to_s + "(#{wochentag}): "+dienst_value
+    end
+
   end
 
   class Dienst
@@ -35,6 +41,10 @@ module PlanikParser
 
     def typ
       @dienstart.typ
+    end
+
+    def to_s
+      name + "(#{typ})"
     end
   end
   class Dienstart
