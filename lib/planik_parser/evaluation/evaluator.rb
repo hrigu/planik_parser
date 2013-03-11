@@ -25,7 +25,7 @@ module PlanikParser
       end_i = @situation.tage.size - (@tree.breite - 1) - @tree.min_index
 
       (start_i...end_i).each do |n|
-        if (previous_result &&  previous_result[n] == false)
+        if (previous_result && previous_result[n] == false)
           result << "-"
         else
           @auswertungsfenster_index = n
