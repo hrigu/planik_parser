@@ -1,4 +1,6 @@
 module PlanikParser
+
+
   module Rule
     class Bedingung
       attr_reader :raw_string

@@ -1,10 +1,15 @@
 require 'date'
 
 module PlanikParser
+
   class Situation
     attr_accessor :tage, :start_date
     def initialize start_date
       @start_date = start_date
+    end
+
+    def to_s
+      "start_date: #{start_date} \ntage:    : #{tage}"
     end
 
   end
@@ -23,7 +28,7 @@ module PlanikParser
 
     def to_s
       dienst_value = dienst.nil? ? "leer" : dienst.to_s
-      date.to_s + "(#{wochentag}): "+dienst_value
+      #date.to_s + "(#{wochentag}): "+dienst_value
     end
 
   end
@@ -44,7 +49,8 @@ module PlanikParser
     end
 
     def to_s
-      name + "(#{typ})"
+      name
+      #name + "(#{typ})"
     end
   end
   class Dienstart
