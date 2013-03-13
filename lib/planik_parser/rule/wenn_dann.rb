@@ -10,7 +10,7 @@ module PlanikParser
       end
 
       def to_s
-        "#{name}:  WENN #{raw_wenn}  DANN #{raw_dann} (Oder: #{bedingung.raw_string})"
+        "#{name}:  WENN #{raw_wenn}  DANN #{raw_dann} [Oder: #{bedingung.raw_string}]"
       end
 
     end

@@ -9,7 +9,7 @@ module PlanikParser
     end
 
     def to_s
-      "start_date: #{start_date} \ntage:    : #{tage}"
+      "start_date: #{start_date} \ntage:       #{tage}"
     end
 
   end
@@ -75,7 +75,7 @@ module PlanikParser
     end
 
     def create_day day_spec
-      if (day_spec.empty?)
+      if (day_spec.nil? || day_spec.empty?)
         Tag.new(nil)
         else
           Tag.new(Dienst.new(Dienstart.new(day_spec[:name], day_spec[:typ])))
