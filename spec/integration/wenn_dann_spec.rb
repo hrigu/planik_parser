@@ -55,6 +55,21 @@ module PlanikParser
           end
         end
       end
+      context "Situation: Alle Tage leer" do
+        let(:situation) { SituationBuilder.new.build(
+            start_datum: Date.parse("2013-01-07"),
+            tage: [nil, nil]
+        )
+        }
+        context "Einfache Regel" do
+          let(:rule) { WennDann.new("Nach D1 ein D3", "t0.name = D1", "t1.name = D3") }
+          it "works" do
+            wenn_dann_evaluator = WennDannEvaluator.new(rule, situation)
+            puts situation
+            wenn_dann_evaluator.evaluate.should eq [true] #TODO korrekt?
+          end
+        end
+      end
 
 
     end

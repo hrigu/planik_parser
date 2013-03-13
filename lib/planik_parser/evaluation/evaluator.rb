@@ -19,18 +19,14 @@ module PlanikParser
     # Das Fenster schiebt sich über die Situation.
     # @return Ein Array von boolean Werten (true, false, nil) der einzelnen Auswertungsfenster
     ##
-    def evaluate previous_result = nil
+    def evaluate
       result = [] # Die Resultate der einzelnen Fenster. Grösse: Anz Tage - (Breite des Baumes - 1) - Minindex des Baumes
       start_i = 0
       end_i = @situation.tage.size - (@tree.breite - 1) - @tree.min_index
 
-      (start_i...end_i).each do |n|
-        if (previous_result && previous_result[n] == false)
-          result << "-"
-        else
-          @auswertungsfenster_index = n
-          result << @tree.evaluate(self)
-        end
+      (start_i...end_i).each do |i|
+        @auswertungsfenster_index = i
+        result << @tree.evaluate(self)
       end
       result
     end
